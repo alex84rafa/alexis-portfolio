@@ -30,7 +30,7 @@
 <div id="page-loader">
   <div class="loader-content">
     <div class="loader-spinner"></div>
-    <p class="loader-text">ARS 2026 cargando...</p>
+
   </div>
 </div>
 
@@ -42,6 +42,20 @@
 
 <style>
 
+.loader-text {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.loader-text.fade-out {
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.loader-text.fade-in {
+  opacity: 1;
+  transition: opacity .6s ease;
+}
 
 .navbar {
   z-index: 9999;
@@ -69,12 +83,23 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .demo-reel-btn {
+    padding: 7px 16px;
+    font-size: 0.9rem;
+  }
+}
+
 /* ========================================= */
 /* CONTROLES INDEPENDIENTES BOTÓN DEMO REEL */
 /* ========================================= */
 
 /* Estilos base del botón (aplicados a ambos) */
 .demo-reel-btn {
+    white-space: nowrap;   /* evita que el texto se parta */
+  flex-shrink: 0;        /* evita que se aplaste */
+    padding: 8px 18px;
+
   background-color: #f5c76a;
   color: #1a1a1a;
   border: none;
@@ -424,8 +449,7 @@
     autoplay
     loop>
   </dotlottie-wc>
-
-  <h1 class="intro-text">ARS-2026</h1>
+  <p class="loader-text" id="loaderMessage">ARS-2026</p>
 </div>
 
 <!-- ----------------------------------------------------------------------- -->
@@ -1403,7 +1427,7 @@ Helen Escobedo: Ambientes totales
   </div>
 
 <!-- ---------------------------------- FREELANCER ---------------------------------- -->
-  <div id="project-free-modal" class="modal">
+    <!--   <div id="project-free-modal" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
 <header class="modal-card-head">
@@ -1456,14 +1480,14 @@ Helen Escobedo: Ambientes totales
 Helen Escobedo: Ambientes totales
     
   </a>
-</div>
+</div>-->
 
       <!--    <div class="tags">
             <span class="tag">Data Art</span>
             <span class="tag">Animación</span>
             <span class="tag">Modelados</span>
             <span class="tag">Blender</span>-->
-          </div>  
+  <!--            </div>  
         </div>
 
       </section>
@@ -1471,7 +1495,7 @@ Helen Escobedo: Ambientes totales
         <button class="button is-success">Close</button>
       </footer>
     </div>
-  </div>
+  </div>-->
 
 <!-- ---------------------------------- Gestion Cultural ---------------------------------- -->
   <div id="project-GC-modal" class="modal">
@@ -1818,40 +1842,56 @@ Helen Escobedo: Ambientes totales
 
 <!-- ---------------------------------- JS ---------------------------------- -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+<script>
+  
+document.addEventListener("DOMContentLoaded", () => {
+
+  const messages = ["Cargando.", "Cargando..", "Cargando...", "ARS-2026"];
+  let index = 0;
+
+  const loaderText = document.getElementById("loaderMessage");
+  if (!loaderText) return;
+
+let dots = 1;
+
+setInterval(() => {
+  loaderText.textContent = "Cargando" + ".".repeat(dots);
+  dots = dots === 3 ? 1 : dots + 1;
+}, 800);
+
+});
+
 window.addEventListener("load", function() {
 
   const loader = document.getElementById("page-loader");
   const intro = document.getElementById("intro");
   const body = document.body;
 
-  // Primero fade out del loader
-  setTimeout(function() {
+  setTimeout(() => {
     loader.classList.add("fade-out");
-    
-    setTimeout(function() {
-      loader.style.display = "none";
-    }, 800);
-  }, 1000); // Mostrar loader por 1 segundo
+    setTimeout(() => loader.style.display = "none", 800);
+  }, 1000);
 
-  setTimeout(function() {
-
-    // Fade out intro
+  setTimeout(() => {
     intro.classList.add("hidden");
 
-    setTimeout(function() {
+    setTimeout(() => {
       intro.style.display = "none";
-
-      // Fade in toda la página
       body.classList.remove("loading");
       body.classList.add("loaded");
-
     }, 1000);
 
-  }, 2500); // duración de la intro
+  }, 2500);
 
 });
+
 </script>
+
+
+
 
 <!-- Script para menú hamburguesa -->
 <script>
@@ -1940,8 +1980,10 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Verificar al cargar y al redimensionar
   window.addEventListener("resize", checkScroll);
-  setTimeout(checkScroll, 3000); // Verificar después de que cargue la página
-});
+  window.addEventListener("load", () => {
+  setTimeout(checkScroll, 800);
+}); // Verificar después de que cargue la página
+
 </script>
 
 <script>
